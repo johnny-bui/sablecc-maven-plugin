@@ -17,6 +17,45 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>de.htwds</groupId>
+				<artifactId>macroobject-maven-plugin</artifactId>
+				<version>1.0-SNAPSHOT</version>
+				
+				<executions>
+					<execution>
+						<configuration>
+							<generateCode>true</generateCode>
+							<strict>true</strict>
+							<directory>target/generated-sources/objectmacro</directory>
+							<packagename>de.htwsaarland.sql.imp.template</packagename>
+							<templates>
+								<template>
+									<file>src/main/resources/sqltemplate.objectmacro</file>
+								</template>
+								<template>
+									<file>src/main/resources/simple.objectmacro</file>
+									<language>java</language>
+									<packagename>de.htwds</packagename>
+								</template>
+								<!-- 
+								<template>
+									<file>templates2.objectmacro</file>
+									<language>java</language>
+								</template>
+								<template>
+									<file>xxxx.objectmacro</file>
+								</template>
+								-->
+							</templates>
+						</configuration>
+						<goals>
+							<goal>objectmacro</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
@@ -44,23 +83,7 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>de.htwds</groupId>
-				<artifactId>macroobject-maven-plugin</artifactId>
-				<version>1.0-SNAPSHOT</version>
-				
-				<executions>
-					<execution>
-						<configuration>
-							<greeting>Customized wellcome</greeting>
-						</configuration>
-						<goals>
-							<goal>objectmacro</goal>
-						</goals>
-					</execution>
-					
-				</executions>
-			</plugin>
+			
 		</plugins>	  
 	</build>
 	<dependencies>

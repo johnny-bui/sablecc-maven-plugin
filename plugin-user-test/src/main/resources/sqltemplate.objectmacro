@@ -1,0 +1,52 @@
+$comment$
+Template fuer die Erzeugung von SQL Abfrage.
+Compile-Befehl fuer JAVA:
+	objectmacro sqltemplate.objectmacro -t java -d ../../../target/generated-sources/objectmacro -p de.htwsaarland.sql.imp.template 
+
+Autor
+	Hong Phuc Bui
+$end$
+
+$comment: ========= create_table ===== $
+
+$macro: create_table(name)$
+CREATE TABLE IF NOT EXISTS $name (
+$expand: create_column, separator=",\n"$
+$expand: constraints, separator=",\n", before_first=",\n" $
+
+)$insert: table_option$ $insert: delimiter$
+$end: create_table$
+
+
+$comment: ========== create_column ==== $
+
+$macro: create_column(name, sql_type)$
+	$(name) $(sql_type) $no_eol$
+$macro:not_null$ NOT NULL $end: not_null$ $no_eol$
+$macro:unique$ UNIQUE $end: unique$
+$end: create_column$
+
+$comment: =========== constrains ======== $
+
+$macro: constraints (constraints_name)$
+$macro: primary_key(col_name)$ 
+	CONSTRAINTS $(constraints_name)  PRIMARY KEY($(col_name)) $no_eol$
+$end: primary_key$ 
+$macro: foreign_key(col_name, foreign_tab, foreign_col)$ 
+	CONSTRAINTS $(constraints_name) FOREIGN KEY $(col_name) REFERENCES $(foreign_tab)($(foreign_col)) $no_eol$
+$end: foreign_key$
+$end: constraints$
+
+
+$comment: ========== table_option ===== $
+
+$text:table_option$
+ENGINE=InnoDB DEFAULT CHARACTER SET=utf8 $no_eol$
+$end:table_option$
+
+$comment: ========== SQL demiliter ===== $
+
+$text:delimiter$ 
+;
+$end:delimiter$
+

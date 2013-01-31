@@ -1,6 +1,9 @@
 package de.htwds.pluginusertest;
 
-import de.Generate;
+import de.htwsaarland.sql.imp.template.MCreateTable;
+
+
+
 
 
 /**
@@ -11,7 +14,6 @@ public class App
 {
     public static void main( String[] args )
     {
-		Generate g = new Generate();
-		g.hi();
+		MCreateTable tab = new MCreateTable("hallo");
     }
 }
