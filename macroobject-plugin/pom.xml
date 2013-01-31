@@ -19,21 +19,6 @@
 	
 	<build>
 		<plugins>
-			<!-- plugin>
-				<groupId>de.htwds</groupId>
-				<artifactId>macroobject-maven-plugin</artifactId>
-				<version>1.0-SNAPSHOT</version>
-				<executions>
-					<execution>
-						<configuration>
-							<greeting>Welcome</greeting>
-						</configuration>
-						<goals>
-							<goal>sayhi</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
@@ -90,6 +75,12 @@
 			<artifactId>maven-plugin-api</artifactId>
 			<version>3.0</version>
 			<type>jar</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.sablecc</groupId>
+			<artifactId>objectmacro</artifactId>
+			<version>4.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
   
