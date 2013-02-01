@@ -18,23 +18,24 @@
 		<plugins>
 			<plugin>
 				<groupId>de.htwds</groupId>
-				<artifactId>macroobject-maven-plugin</artifactId>
+				<artifactId>objectmacro-maven-plugin</artifactId>
 				<version>1.0-SNAPSHOT</version>
-				
+				<configuration>
+					<generateCode>true</generateCode>
+					<strict>true</strict>
+					<directory>target/generated-sources/objectmacro</directory>
+					<packagename>de.htwsaarland.sql.imp.template</packagename>
+				</configuration>
 				<executions>
 					<execution>
 						<configuration>
-							<generateCode>true</generateCode>
-							<strict>true</strict>
-							<directory>target/generated-sources/objectmacro</directory>
-							<packagename>de.htwsaarland.sql.imp.template</packagename>
 							<templates>
 								<template>
 									<file>src/main/resources/sqltemplate.objectmacro</file>
 								</template>
 								<template>
 									<file>src/main/resources/simple.objectmacro</file>
-									<language>java</language>
+									<language>scala</language>
 									<packagename>de.htwds</packagename>
 								</template>
 								<!-- 
@@ -86,6 +87,7 @@
 			
 		</plugins>	  
 	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>

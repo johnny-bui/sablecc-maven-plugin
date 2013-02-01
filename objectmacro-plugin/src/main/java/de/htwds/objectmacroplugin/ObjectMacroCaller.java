@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.htwds.macroobjectplugin;
+package de.htwds.objectmacroplugin;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +17,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.sablecc.objectmacro.launcher.ObjectMacro;
 
 /**
- * Says "Hi" to the user.
+ * Call ObjectMacro to generate Java file from ObjectMacro file.
+ * @author Hong Phuc Bui
+ * @version 1.0-SNAPSHOT
  *
  * @phase generate-resources
  */
@@ -33,23 +35,30 @@ public class ObjectMacroCaller extends AbstractMojo {
 	private String directory;
 	@Parameter(defaultValue = "template")
 	private String packagename;
+	
 	/**
-	 * true => --generate-code, false => --no-code
+	 * true => --generate-code, false => --no-code.
 	 */
 	@Parameter(defaultValue = "true")
 	private boolean generateCode;
+	
 	/**
-	 * true => strict false => lenient
+	 * true => strict false => lenient.
 	 */
 	@Parameter(defaultValue = "true")
 	private boolean strict;
+	
 	/**
-	 * informative => --informativ quite => --quiet verbose => --verbose
+	 * informative => --informativ quite => --quiet verbose => --verbose.
 	 */
 	@Parameter(defaultValue = "informative")
 	private String informative;
+
+	
 	@Parameter
 	private List<Map> templates;
+
+	
 	private final String fileSep = System.getProperty("file.separator");
 	private String baseDir = System.getProperty("project.basedir");
 	private static final String GEN_CODE = "--generate-code";

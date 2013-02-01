@@ -3,15 +3,28 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.htwds</groupId>
-	<artifactId>macroobject-maven-plugin</artifactId>
+	<artifactId>objectmacro-maven-plugin</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<description>
-		plugin to generate source from objectmacro files
+		Plugin to generate source from objectmacro files
 	</description>
 	<packaging>maven-plugin</packaging>
+	<developers>
+		<developer>
+			<name>Hong Phuc Bui aka. lazyboy</name>
+			<email>phucluoi@gmail.com</email>
+		</developer>
+	</developers>
 
-	<name>macroobject-plugin</name>
+	<name>objectmacro-plugin</name>
 	<url>http://mathcoach.htw-saarland.de</url>
+
+	<prerequisites>
+		<maven>3.0+</maven>
+	</prerequisites>
+	
+	<inceptionYear>2013</inceptionYear>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,8 +95,25 @@
 			<artifactId>objectmacro</artifactId>
 			<version>4.0-SNAPSHOT</version>
 		</dependency>
+
+		<!--		
+				<dependency>
+					<groupId>org.apache.maven.shared</groupId>
+					<artifactId>maven-plugin-testing-harness</artifactId>
+					<version>1.1</version>
+					<scope>test</scope>
+				</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugin-testing</groupId>
+			<artifactId>maven-plugin-testing-harness</artifactId>
+			<version>2.0-alpha-1</version>
+			<scope>test</scope>
+			<type>jar</type>
+		</dependency>
+		-->
+
 	</dependencies>
-  
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>newton</id>
