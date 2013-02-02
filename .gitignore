@@ -1,0 +1,3 @@
+/objectmacro-plugin/target/
+/plugin-user-test/target/
+/plugin-user-test/${gensource.dir}/objectmacro/
