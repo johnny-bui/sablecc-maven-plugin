@@ -12,6 +12,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<gensoure.dir>${basedir}/target/generated-sources</gensoure.dir>
 	</properties>
 	
 	<build>
@@ -20,16 +21,57 @@
 				<groupId>de.htwds</groupId>
 				<artifactId>objectmacro-maven-plugin</artifactId>
 				<version>1.0-beta</version>
+				<!-- =============================================
+					All config parameters here are used for 
+					every objectmacro files defined below, unless
+					they are override in the tag <template>
+
+					The default target language is java, which is
+					not shown here. You can use it like 
+					<language>scala</language>.
+
+					To config the flag informativ (-i), quiet (-q), or
+					verbose (-v) you can use the tag 
+					<informativ>informativ|quiet|verbose</informativ>.
+					The default value is informativ.
+				================================================== -->
 				<configuration>
+					<!-- by default code will be generated 
+						(the option -g)
+					-->
 					<generateCode>true</generateCode>
+					<!-- and the plugin uses the the option strict 
+						(the option -s  of objectmacro).
+					-->
 					<strict>true</strict>
-					<directory>target/generated-sources/objectmacro</directory>
+					<!-- This is the detinated package for all template
+						(the option -d directory). 
+						
+						The default value is
+ 						${basedir}/target/generated-sources/objectmacro
+					-->
+					<directory>${gensource.dir}/objectmacro</directory>
+					<!-- all generated file will be saved in this folder 
+						(the option -p packagename).
+
+						The default value ist template.
+					-->
 					<packagename>de.htwsaarland.sql.imp.template</packagename>
 				</configuration>
 				<executions>
 					<execution>
+						<!-- ================================================== 
+							you can define particular options for each template
+							file if you need. These option override the options
+							defined above.
+						==================================================== -->
 						<configuration>
 							<templates>
+								<!-- 
+									a template contains one and only one tag 
+									<file>. The file is the template file, from which
+									you want to generate target code for your templates.
+								-->
 								<template>
 									<file>src/main/resources/sqltemplate.objectmacro</file>
 								</template>
@@ -38,19 +80,18 @@
 									<language>scala</language>
 									<packagename>de.htwds</packagename>
 								</template>
-								<template><!-- no file-tag causes a null -->
-								</template>
 								<!-- 
-								<template>
-									<file>templates2.objectmacro</file>
-									<language>java</language>
-								</template>
-								<template>
-									<file>xxxx.objectmacro</file>
-								</template>
+									This template hasn't the <file>-tag, that 
+									causes a maven warning 
 								-->
+								<template>
+								</template>
 							</templates>
 						</configuration>
+						<!-- ===================================================
+							the plugin provides only one goal: objectmacro. This
+							goal is called in the generate-sources phase. 
+						=================================================== -->
 						<goals>
 							<goal>objectmacro</goal>
 						</goals>
@@ -59,15 +100,11 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<showDeprecation>true</showDeprecation>
-				</configuration>
-			</plugin>
-
-			<plugin>
+				<!-- ==========================================================
+					You need this plugin to tell Maven to add the genereated source
+					in sources. Otherwise you cannot compile files, which depends
+					on generated files. Because they are not in class path.
+				============================================================ -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>1.7</version>
@@ -79,14 +116,12 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>target/generated-sources/objectmacro/</source>
+								<source>${gensource.dir}/objectmacro/</source>
 							</sources>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-
-			
 		</plugins>	  
 	</build>
 

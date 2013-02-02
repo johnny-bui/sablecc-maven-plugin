@@ -82,12 +82,6 @@ public class ObjectMacroCaller extends AbstractMojo {
 					getLog().info(argv.toString());
 					ObjectMacro.compile(argv.toArray(new String[0]));
 				}
-				/*try{
-				 ObjectMacro.compile(argv);
-				 }catch (Exception mex){
-				 getLog().warn(mex.getMessage());
-				 getLog().debug(mex);
-				 }*/
 			}
 		} catch (RuntimeException ex) {
 			throw new MojoFailureException("Compile template file error: " + ex.getMessage(), ex);
