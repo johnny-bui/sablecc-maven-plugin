@@ -8,11 +8,11 @@
 	<packaging>jar</packaging>
 
 	<name>plugin-user-test</name>
-	<url>http://maven.apache.org</url>
+	<url>https://github.com/verylazyboy/maven-plugin/tree/master/plugin-user-test</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gensoure.dir>${basedir}/target/generated-sources</gensoure.dir>
+		<gensource.dir>${basedir}/target/generated-sources</gensource.dir>
 	</properties>
 	
 	<build>
