@@ -9,6 +9,6 @@ $end$
 
 $comment: ========= create_table ===== $
 
-$macro: simple(name)$
-hallo $name !!!!!
-$end: simple$
+$macro: not_so_simple(name)$
+hallo not so simple $name !!!!!
+$end: not_so_simple$

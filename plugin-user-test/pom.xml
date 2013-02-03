@@ -20,7 +20,7 @@
 			<plugin>
 				<groupId>de.htwds</groupId>
 				<artifactId>objectmacro-maven-plugin</artifactId>
-				<version>1.0-beta</version>
+				<version>1.0-beta.1</version>
 				<!-- =============================================
 					All config parameters here are used for 
 					every objectmacro files defined below, unless
@@ -44,14 +44,14 @@
 						(the option -s  of objectmacro).
 					-->
 					<strict>true</strict>
-					<!-- This is the detinated package for all template
+					<!-- All generated file will be saved in this folder  
 						(the option -d directory). 
 						
 						The default value is
  						${basedir}/target/generated-sources/objectmacro
 					-->
 					<directory>${gensource.dir}/objectmacro</directory>
-					<!-- all generated file will be saved in this folder 
+					<!-- This is the destinate package for all template
 						(the option -p packagename).
 
 						The default value ist template.
@@ -81,10 +81,22 @@
 									<packagename>de.htwds</packagename>
 								</template>
 								<!-- 
-									This template hasn't the <file>-tag, that 
-									causes a maven warning 
+									This template has not the <file>-tag, that 
+									causes a Maven warning 
 								-->
 								<template>
+								</template>
+								<template>
+									<file>src/main/resources/notsosimple.objectmacro</file>
+									<!-- 
+										If you use an absolute path for the 
+										destinate directory, you must manual remove the 
+										generate file, since Maven can remove only the directory
+										"target". Furthermore, som IDE cannot recognize the
+										source outside of the target/generated-sources. So
+										absolute path is not recommended
+									-->
+									<directory>/tmp/objectmacro</directory>
 								</template>
 							</templates>
 						</configuration>
@@ -99,12 +111,13 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<!-- ==========================================================
-					You need this plugin to tell Maven to add the genereated source
-					in sources. Otherwise you cannot compile files, which depends
-					on generated files. Because they are not in class path.
-				============================================================ -->
+			<!-- ==========================================================
+				You need this plugin to tell Maven to add the generated source
+				in sources. Otherwise you cannot compile files, which depends
+				on generated files. Because they are not in class path.
+				NOTE: you don't need this plugin since the version 1.0-beta.1 
+			============================================================ -->
+			<!-- plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>1.7</version>
@@ -121,7 +134,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin-->
 		</plugins>	  
 	</build>
 
