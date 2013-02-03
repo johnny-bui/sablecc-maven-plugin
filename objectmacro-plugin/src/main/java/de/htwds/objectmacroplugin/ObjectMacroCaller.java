@@ -59,6 +59,7 @@ public class ObjectMacroCaller extends AbstractMojo {
 	private static final String VERBOSE = "--verbose";
 	private static final String QUIET = "--quiet";
 	private static final Set<String> packageNameNoGo = new HashSet<String>();
+
 	static {// TODO add more 
 		packageNameNoGo.add("..");
 		packageNameNoGo.add("#");

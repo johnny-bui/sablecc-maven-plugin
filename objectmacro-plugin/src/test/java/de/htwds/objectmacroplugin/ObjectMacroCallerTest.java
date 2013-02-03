@@ -1,43 +1,42 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package de.htwds.objectmacroplugin;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.io.File;
+import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 
 /**
  *
- * @author hbui
+ * @author phucluoi
+ * @version Feb 3, 2013
  */
-public class ObjectMacroCallerTest {
-	
-	public ObjectMacroCallerTest() {
-	}
-	
-	@BeforeClass
-	public static void setUpClass() {
-	}
-	
-	@AfterClass
-	public static void tearDownClass() {
-	}
-	
-	@Before
-	public void setUp() {
-	}
-	
-	@After
-	public void tearDown() {
-	}
+public class ObjectMacroCallerTest extends AbstractMojoTestCase{
+	/** {@inheritDoc} */
+	@Override
+    protected void setUp() throws Exception
+    {
+        // required
+        super.setUp();
+    }
 
-	@Test
-	public void testExecute() throws Exception {
-		// TODO write test here !!!!!!!
-	}
+	/** {@inheritDoc} */
+	@Override
+    protected void tearDown() throws Exception
+    {
+        // required
+        super.tearDown();
+    }
+
+	/**
+     * @throws Exception if any
+     */
+    public void testSomething() throws Exception
+    {
+        File pom = getTestFile( "src/test/resources/unit/pom.xml" );
+        assertNotNull( pom );
+        assertTrue( pom.exists() );
+
+        ObjectMacroCaller myMojo = (ObjectMacroCaller) lookupMojo( "objectmacro", pom );
+        assertNotNull( myMojo );
+        myMojo.execute();
+    }
 }
