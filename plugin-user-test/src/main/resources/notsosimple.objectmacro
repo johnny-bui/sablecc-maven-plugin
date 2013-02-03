@@ -1,0 +1,14 @@
+$comment$
+Template fuer die Erzeugung von SQL Abfrage.
+Compile-Befehl fuer JAVA:
+	objectmacro sqltemplate.objectmacro -t java -d ../../../target/generated-sources/objectmacro -p de.htwsaarland.sql.imp.template 
+
+Autor
+	Hong Phuc Bui
+$end$
+
+$comment: ========= create_table ===== $
+
+$macro: simple(name)$
+hallo $name !!!!!
+$end: simple$
