@@ -1,15 +1,22 @@
 package de.htwds.objectmacroplugin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.maven.project.MavenProjectHelper;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.DefaultMavenProjectHelper;
+import org.apache.maven.project.MavenProject;
 import org.sablecc.objectmacro.launcher.ObjectMacro;
 
 /**
@@ -47,8 +54,16 @@ public class ObjectMacroCaller extends AbstractMojo {
 	 */
 	@Parameter(defaultValue = "informative")
 	private String informative;
-	@Parameter
+	
+	@Parameter(required=true)
 	private List<Map> templates;
+
+	@Parameter(defaultValue="${component.org.apache.maven.project.MavenProjectHelper}")
+	private MavenProjectHelper projectHelper;
+	
+	@Parameter(defaultValue="${project}")
+	private MavenProject project;
+			
 	private final String fileSep = System.getProperty("file.separator");
 	private String baseDir = System.getProperty("project.basedir");
 	private static final String GEN_CODE = "--generate-code";
@@ -69,20 +84,36 @@ public class ObjectMacroCaller extends AbstractMojo {
 		packageNameNoGo.add("%");
 		packageNameNoGo.add(" ");
 	}
-
+	
 	public void execute() throws MojoFailureException {
 		try {
+			if (projectHelper==null){
+				//getLog().warn("projectHelper is null");
+				projectHelper = new DefaultMavenProjectHelper();
+			}
+			if (project == null){
+				getLog().warn("project is null");
+			}
 			constructOutDir();
-			for (Map m : templates) {
-				List<String> argv = parseArgument(m);
-				if (argv != null) {
-					getLog().info("call ObjectMacro with argv:");
-					//for (String s : argv) {
-					//	getLog().info(s);
-					//}
-					getLog().info(argv.toString());
-					ObjectMacro.compile(argv.toArray(new String[0]));
+			if (templates != null){
+				for (Map m : templates) {
+					Argument argv = parseArgument(m);
+					if (argv != null) {
+						getLog().info("call ObjectMacro with argv:");
+						//for (String s : argv) {
+						//	getLog().info(s);
+						//}
+						getLog().info(argv.getArgv().toString());
+						ObjectMacro.compile(argv.getStringArgv());
+						String localDirectory = argv.getDirectory();
+						getLog().info("add " + localDirectory + " to resources");
+						project.addCompileSourceRoot(localDirectory);
+					}
 				}
+			}else{
+				//TODO: What is the convenient behavior if there are not 
+				// templated files? I just put an warning out on screen.
+				getLog().warn("no tag <templates> found");
 			}
 		} catch (RuntimeException ex) {
 			throw new MojoFailureException("Compile template file error: " + ex.getMessage(), ex);
@@ -92,8 +123,9 @@ public class ObjectMacroCaller extends AbstractMojo {
 
 	}
 
-	private List<String> parseArgument(Map m) {
-		List<String> arg = new ArrayList<String>();
+	private Argument parseArgument(Map m) {
+		//List<String> arg = new ArrayList<String>();
+		Argument a = new Argument();
 		// the template file
 		// TODO: optimize here, check the tag <file> first.
 		String file = (String) m.get("file");
@@ -105,28 +137,32 @@ public class ObjectMacroCaller extends AbstractMojo {
 				// option "-t language"
 				String l = (String) m.get("language");
 				String localLanguage = (isOptionValid(l)) ? l.trim() : language;
-				arg.add("-t");
-				arg.add(localLanguage);
+				//arg.add("-t");
+				//arg.add(localLanguage);
+				a.setLanguage(localLanguage);
 				// option "-d directory" // TODO: check validation directory
 				String d = (String) m.get("directory");
 				String localDirectory = (isOptionValid(d)) ? d.trim() : directory;
-				arg.add("-d");
-				arg.add(localDirectory);
+				//arg.add("-d");
+				//arg.add(localDirectory);
+				a.setDirectory(localDirectory);
 				// option "-p packagesname"
 				String p = (String) m.get("packagename");
 				if (p != null) {
 					if (isPackageNameValid(p)) {
 						String localPackagename = p.trim();
-						arg.add("-p");
-						arg.add(localPackagename);
+						//arg.add("-p");
+						//arg.add(localPackagename);
+						a.setPackagename(localPackagename);
 					} else {
 						throw new RuntimeException("package name not valid:" + p.trim());
 					}
 				} else {
 					if (isPackageNameValid(packagename)) {
 						String localPackagename = packagename.trim();
-						arg.add("-p");
-						arg.add(localPackagename);
+						//arg.add("-p");
+						//arg.add(localPackagename);
+						a.setPackagename(localPackagename);
 					} else {
 						throw new RuntimeException("package name not valid:" + packagename.trim());
 					}
@@ -138,7 +174,8 @@ public class ObjectMacroCaller extends AbstractMojo {
 					g = g.trim().toLowerCase();
 					localGenerateCode = (g.equals("true") || g.equals("generate-code")) ? GEN_CODE : NO_CODE;
 				}
-				arg.add(localGenerateCode);
+				//arg.add(localGenerateCode);
+				a.setGenerateCode(localGenerateCode);
 				// option "--strict" or "--lenient"
 				String localStrict = strict ? STRICT : LENIENT;
 				String s = (String) m.get("strict");
@@ -146,7 +183,8 @@ public class ObjectMacroCaller extends AbstractMojo {
 					s = s.trim().toLowerCase();
 					localStrict = (s.equals("true") || s.equals("strict")) ? STRICT : LENIENT;
 				}
-				arg.add(localStrict);
+				//arg.add(localStrict);
+				a.setStrict(localStrict);
 				// option "--quiet" or "--informative" or "--verbose"
 				String localInformative = INFORMATIVE;
 				String i = (String) m.get("informative");
@@ -169,8 +207,10 @@ public class ObjectMacroCaller extends AbstractMojo {
 						localInformative = VERBOSE;
 					}
 				}
-				arg.add(localInformative);
-				arg.add(file.trim());
+				//arg.add(localInformative);
+				a.setInformative(localInformative);
+				//arg.add(file.trim());
+				a.setFile(file);
 			} else {
 				getLog().warn("Configuration fail, file name: " + file + " invalid");
 				return null;
@@ -178,7 +218,7 @@ public class ObjectMacroCaller extends AbstractMojo {
 		}
 		// return the result
 		//String[] argv = arg.toArray(new String[0]);
-		return arg;
+		return a;
 	}
 
 	private String constructOutDir() {
