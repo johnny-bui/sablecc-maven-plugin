@@ -96,7 +96,9 @@
 										source outside of the target/generated-sources. So
 										absolute path is not recommended
 									-->
+									<!--
 									<directory>/tmp/objectmacro</directory>
+									-->
 								</template>
 							</templates>
 						</configuration>

@@ -1,7 +1,5 @@
 package de.htwds.objectmacroplugin;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +9,6 @@ import org.apache.maven.project.MavenProjectHelper;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -96,19 +93,19 @@ public class ObjectMacroCaller extends AbstractMojo {
 			}
 			constructOutDir();
 			if (templates != null){
+				Set<String> dirs = new HashSet<String>();
 				for (Map m : templates) {
 					Argument argv = parseArgument(m);
 					if (argv != null) {
 						getLog().info("call ObjectMacro with argv:");
-						//for (String s : argv) {
-						//	getLog().info(s);
-						//}
 						getLog().info(argv.getArgv().toString());
 						ObjectMacro.compile(argv.getStringArgv());
-						String localDirectory = argv.getDirectory();
-						getLog().info("add " + localDirectory + " to resources");
-						project.addCompileSourceRoot(localDirectory);
+						dirs.add(argv.getDirectory());
 					}
+				}
+				for(String d: dirs){
+					getLog().info("add " + d + " to resources");
+					project.addCompileSourceRoot(d);
 				}
 			}else{
 				//TODO: What is the convenient behavior if there are not 
@@ -124,7 +121,6 @@ public class ObjectMacroCaller extends AbstractMojo {
 	}
 
 	private Argument parseArgument(Map m) {
-		//List<String> arg = new ArrayList<String>();
 		Argument a = new Argument();
 		// the template file
 		// TODO: optimize here, check the tag <file> first.
@@ -137,22 +133,18 @@ public class ObjectMacroCaller extends AbstractMojo {
 				// option "-t language"
 				String l = (String) m.get("language");
 				String localLanguage = (isOptionValid(l)) ? l.trim() : language;
-				//arg.add("-t");
-				//arg.add(localLanguage);
 				a.setLanguage(localLanguage);
+				
 				// option "-d directory" // TODO: check validation directory
 				String d = (String) m.get("directory");
 				String localDirectory = (isOptionValid(d)) ? d.trim() : directory;
-				//arg.add("-d");
-				//arg.add(localDirectory);
 				a.setDirectory(localDirectory);
+				
 				// option "-p packagesname"
 				String p = (String) m.get("packagename");
 				if (p != null) {
 					if (isPackageNameValid(p)) {
 						String localPackagename = p.trim();
-						//arg.add("-p");
-						//arg.add(localPackagename);
 						a.setPackagename(localPackagename);
 					} else {
 						throw new RuntimeException("package name not valid:" + p.trim());
@@ -160,13 +152,12 @@ public class ObjectMacroCaller extends AbstractMojo {
 				} else {
 					if (isPackageNameValid(packagename)) {
 						String localPackagename = packagename.trim();
-						//arg.add("-p");
-						//arg.add(localPackagename);
 						a.setPackagename(localPackagename);
 					} else {
 						throw new RuntimeException("package name not valid:" + packagename.trim());
 					}
 				}
+				
 				// option "--generate-code" or "--no-code"
 				String localGenerateCode = generateCode ? GEN_CODE : NO_CODE;
 				String g = (String) m.get("generateCode");
@@ -174,8 +165,8 @@ public class ObjectMacroCaller extends AbstractMojo {
 					g = g.trim().toLowerCase();
 					localGenerateCode = (g.equals("true") || g.equals("generate-code")) ? GEN_CODE : NO_CODE;
 				}
-				//arg.add(localGenerateCode);
 				a.setGenerateCode(localGenerateCode);
+				
 				// option "--strict" or "--lenient"
 				String localStrict = strict ? STRICT : LENIENT;
 				String s = (String) m.get("strict");
@@ -183,8 +174,8 @@ public class ObjectMacroCaller extends AbstractMojo {
 					s = s.trim().toLowerCase();
 					localStrict = (s.equals("true") || s.equals("strict")) ? STRICT : LENIENT;
 				}
-				//arg.add(localStrict);
 				a.setStrict(localStrict);
+				
 				// option "--quiet" or "--informative" or "--verbose"
 				String localInformative = INFORMATIVE;
 				String i = (String) m.get("informative");
@@ -207,17 +198,13 @@ public class ObjectMacroCaller extends AbstractMojo {
 						localInformative = VERBOSE;
 					}
 				}
-				//arg.add(localInformative);
 				a.setInformative(localInformative);
-				//arg.add(file.trim());
 				a.setFile(file);
 			} else {
 				getLog().warn("Configuration fail, file name: " + file + " invalid");
 				return null;
 			}
 		}
-		// return the result
-		//String[] argv = arg.toArray(new String[0]);
 		return a;
 	}
 
