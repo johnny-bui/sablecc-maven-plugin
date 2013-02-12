@@ -1,0 +1,187 @@
+/* 
+	filename   : DDLGrammar.ssc
+	created on : Feb 4, 2013
+	description:
+*/
+
+/* define package-prefix */
+Package mysqlgrm;
+
+Helpers
+	letter = [['a' .. 'z']+['A'..'Z']];
+	digit = ['0'..'9'];
+	letter_or_digit = letter | digit | '_';
+	a = 'a'|'A';
+	b = 'b'|'B';
+	c = 'c'|'C';
+	d = 'd'|'D';
+	e = 'e'|'E';
+	f = 'f'|'F';
+	g = 'g'|'G';
+	h = 'h'|'H';
+	i = 'i'|'I';
+	j = 'j'|'J';
+	k = 'k'|'K';
+	l = 'l'|'L';
+	m = 'm'|'M';
+	n = 'n'|'N';
+	o = 'o'|'O';
+	p = 'p'|'P';
+	q = 'q'|'Q';
+	r = 'r'|'R';
+	s = 's'|'S';
+	t = 't'|'T';
+	u = 'u'|'U';
+	v = 'v'|'V';
+	x = 'x'|'X';
+	y = 'y'|'Y';
+	z = 'z'|'Z';
+	backquote = '`';
+	cr  = 0x000d;
+	lf  = 0x000a;
+
+	number = ['0' .. '9']+;
+	dot = '.';
+	at = '@';
+
+	escape_sequence = '\b' | '\t' | '\n' | '\f' | '\r' | '\"' | '\' ''' | '\\' ;
+	unicode_input_character = [0..0xffff];
+	input_character = [unicode_input_character - [cr + lf]];
+	string_character = [input_character - ['"' + '\']] | escape_sequence;
+	line_terminator = lf | cr | cr lf;
+	string_literal = '"' string_character* '"';	
+
+
+/* define token */
+Tokens
+	l_par = '(';
+	r_par = ')';
+	comma = ',';
+	semicolon = ';';
+	floating_point_number = digit+ dot digit*;
+	integer_number = number;
+
+	// Keywords
+		// data type
+	integer = i n t e g e r;
+	bigint = b  i g i n t;
+	float = f l o a t;
+	timestamp = t i m e s t a m p ;
+	varchar = v a r c h a r;
+		// KW in create table statement
+	create = c r e a t e;
+	table = t a b l e;
+	if = i f;
+	exists = e x i s t s;
+	
+	constraint = c o n s t r a i n t;
+	foreign = f o r e i g n ;
+	primary = p r i m a r y;
+	key = k e y;
+	unique = u n i q u e;
+	not = n o t;
+	null = n u l l;	
+	references = r e f e r e n c e s;	
+		// KW in drop table statement
+	drop = d r o p;
+		// KW in truncate table statement
+	truncate = t r u n c a t e;
+		// KW in insert into
+	insert = i n s e r t;
+	into = i n t o;
+	values = v a l u e | v a l u e s ;
+	
+
+	blank = (' ' | 13 | 10 | 9)+;
+	var = at letter_or_digit+;
+
+	identifier = (backquote letter letter_or_digit* backquote) | (letter letter_or_digit*);
+	string_literal = '"' string_character* '"';
+
+/* Token to be ignored */
+Ignored Tokens
+	blank;
+
+
+Productions
+	sql = sttm+;
+	sttm 
+		={ddl} ddl
+		|{dml} dml;
+
+////////////////////////////////////////////////////////////////////////////////////
+/* ========================================================================= */
+	ddl = {create} create_clausel semicolon
+		| {truncate} truncate_clausel semicolon
+		| {drop} drop_clausel semicolon;
+
+/////////////////////////////////////////////////////////////////////////////////////	
+	create_clausel = create table if not exists identifier table_definition ;
+	
+	table_definition =
+		l_par col_def addition_col_def* table_constraint_tail* r_par;
+	
+	col_def = identifier type col_constraint*;
+
+	type = 
+		 {int} integer 
+		|{bigint} bigint 
+		|{float} float 
+		|{timestamp} timestamp 
+		|{chars} varchar l_par integer_number+ r_par;
+	
+	col_constraint = 
+		 {unique} unique
+		|{not_null} not_null
+		;	
+
+	not_null = not null;
+
+	addition_col_def = comma col_def;
+
+	table_constraint_list 
+		= table_constraint table_constraint_tail*;
+
+	table_constraint = 
+		 {primary_key} primary_key
+		|{foreign_key} foreign_key;
+	
+	table_constraint_tail = 
+		comma table_constraint;
+
+	primary_key = constraint [name]:identifier primary key l_par [col]:identifier r_par;
+	foreign_key = constraint [name]:identifier foreign key l_par identifier_list r_par references_clausel;
+	
+	identifier_list = identifier more_identifier*;
+	more_identifier = comma identifier;
+	
+	references_clausel = 
+		references identifier l_par identifier_list r_par;
+
+////////////////////////////////////////////////////////////////////////////////
+	drop_clausel = drop table? if exists identifier_list ;
+
+////////////////////////////////////////////////////////////////////////////////
+	truncate_clausel = truncate table identifier;	
+
+/* Data manipulation language */
+	dml = insert_clausel semicolon;
+
+	insert_clausel = insert into identifier 
+			[l_tupel_par]:l_par [tupel]:identifier_list [r_tupel_par]:r_par 
+			T.values value_clausel_list;
+
+	value_clausel_list = value_clausel more_value_clausel*;
+	value_clausel =  [l_value_par]:l_par [value]:P.values [r_value_par]:r_par;
+	more_value_clausel = comma value_clausel;
+
+	values = single_value more_single_value*;
+	single_value = 
+		{var} var
+		|{int} integer_number
+		|{float} floating_point_number
+		|{string} string_literal;
+	
+	more_single_value = comma single_value;		
+
+
