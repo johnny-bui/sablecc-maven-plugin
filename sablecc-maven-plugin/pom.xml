@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.htwds</groupId>
+  <artifactId>sablecc-maven-plugin</artifactId>
+  <version>1.0-beta.0</version>
+	<description>
+		Plugin to generate source from objectmacro files
+	</description>
+	<packaging>maven-plugin</packaging>
+	<developers>
+		<developer>
+			<name>Hong Phuc Bui aka. lazyboy</name>
+			<email>phucluoi@gmail.com</email>
+		</developer>
+	</developers>
+
+	<name>sablecc-maven-plugin</name>
+	<url>https://github.com/verylazyboy/maven-plugin/tree/master/objectmacro-plugin</url>
+
+	<prerequisites>
+		<maven>3.0+</maven>
+	</prerequisites>
+	
+	<inceptionYear>2013</inceptionYear>
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<!-- see http://jira.codehaus.org/browse/MNG-5346 -->
+					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+				</configuration>
+				<executions>
+					<execution>
+						<id>mojo-descriptor</id>
+						<goals>
+							<goal>descriptor</goal>
+						</goals>
+					</execution>
+					<!-- if you want to generate help goal -->
+					<execution>
+						<id>help-goal</id>
+						<goals>
+							<goal>helpmojo</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+  
+	<dependencies>
+		<!-- dependencies to annotations -->
+		<dependency>
+			<groupId>org.apache.maven.plugin-tools</groupId>
+			<artifactId>maven-plugin-annotations</artifactId>
+			<version>3.1</version>
+			<!-- 
+ 		annotations are not needed for plugin 
+ 		execution so you can remove this dependency
+				for execution with using provided scope 
+			-->
+			<!--scope>provided</scope-->
+		</dependency>
+		<!-- generated help mojo has a dependency to plexus-utils -->
+		<!-- dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>2.0.6</version>
+			<scope>test</scope>
+		</dependency -->
+		
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>3.0</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.sablecc</groupId>
+			<artifactId>sablecc</artifactId>
+			<version>3.7</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.maven.plugin-testing</groupId>
+			<artifactId>maven-plugin-testing-harness</artifactId>
+			<version>2.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	
+	
+	
+	
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Internal Repository</name>
+			<!-- ================ C A U T I O N =======================
+				Define this property in your settings.xml! 
+			=========================================================== -->
+			<url>${internal.repo.path}</url>
+		</repository>
+	</distributionManagement>
+</project>
