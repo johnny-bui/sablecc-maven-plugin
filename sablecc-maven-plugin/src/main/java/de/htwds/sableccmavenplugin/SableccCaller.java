@@ -1,5 +1,7 @@
 package de.htwds.sableccmavenplugin;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +71,15 @@ public class SableccCaller extends AbstractMojo {
 					if (argv != null) {
 						getLog().info("call SableCC with argv:");
 						getLog().info(argv.getArgv().toString());
-						SableCC.main(argv.getStringArgv());
-						dirs.add(argv.getDestination());
+						try{
+							SableCC.processGrammar(argv.getFile(), argv.getDestination());
+							dirs.add(argv.getDestination());
+							projectHelper.addResource( project, argv.getDestination(), 
+									Collections.singletonList("**/**.dat"), new ArrayList() );
+						}catch(Exception ex){
+							log.warn("Cannot compile the file " + argv.getFile());
+							log.warn(ex.getMessage());
+						}
 					}
 				}
 				for(String d: dirs){
@@ -80,7 +89,7 @@ public class SableccCaller extends AbstractMojo {
 			}else{
 				//TODO: What is the convenient behavior if there are not 
 				// templated files? I just put an warning out on screen.
-				getLog().warn("no tag <templates> found");
+				getLog().warn("no tag <grammars> found");
 			}
 		} catch (RuntimeException ex) {
 			throw new MojoFailureException("Compile grammar file error: " + ex.getMessage(), ex);
