@@ -17,7 +17,7 @@
 	</developers>
 
 	<name>sablecc-maven-plugin</name>
-	<url>https://github.com/verylazyboy/maven-plugin/tree/master/objectmacro-plugin</url>
+	<url>https://github.com/verylazyboy/maven-plugin/tree/master/sablecc-maven-plugin</url>
 
 	<prerequisites>
 		<maven>3.0+</maven>
