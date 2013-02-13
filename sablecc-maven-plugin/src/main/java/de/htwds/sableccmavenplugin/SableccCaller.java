@@ -50,6 +50,7 @@ public class SableccCaller extends AbstractMojo {
 	@Parameter(defaultValue="${project}")
 	private MavenProject project;
 	
+	@Override
 	public void execute() throws MojoFailureException {
 		try {
 			if (projectHelper==null){
@@ -77,8 +78,9 @@ public class SableccCaller extends AbstractMojo {
 							projectHelper.addResource( project, argv.getDestination(), 
 									Collections.singletonList("**/**.dat"), new ArrayList() );
 						}catch(Exception ex){
-							log.warn("Cannot compile the file " + argv.getFile());
-							log.warn(ex.getMessage());
+							log.error("Cannot compile the file " + argv.getFile());
+							log.error(ex.getMessage());
+							throw new MojoFailureException("Cannot compile the file " + argv.getFile(), ex);
 						}
 					}
 				}
