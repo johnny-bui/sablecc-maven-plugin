@@ -31,9 +31,14 @@ public class ConfigParser {
 			return null;
 		} else {
 			File grammarFile = new File(file);
-			if (!grammarFile.isFile()) {
-				logger.warn("The config path: " + file + " is not a regular file");
+			if(!grammarFile.exists()){
+				logger.warn("The config path: " + file + " does not exisit");
 				return null;
+			}else{
+				if (!grammarFile.isFile()) {
+					logger.warn("The config path: " + file + " is not a regular file");
+					return null;
+				}
 			}
 		}
 		// parse no-inline
