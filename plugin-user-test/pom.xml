@@ -140,16 +140,18 @@
 			<plugin>
 				<groupId>de.htwds</groupId>
 				<artifactId>sablecc-maven-plugin</artifactId>
-				<version>1.0-beta.0</version>
+				<version>1.0-beta.1-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<configuration>
 							<grammars>
 								<grammar>
-									<file>src/main/resources/java-1.5.scc</file>
+									<file>src/main/resources/MySQLGrammar.scc</file>
+									<destination>${gensource.dir}/mysql</destination>
 								</grammar>
+								
 								<grammar>
-									<file>src/main/resource/</file>
+									<file>src/main/resources/java-1.5.scc</file>
 								</grammar>
 							</grammars>
 						</configuration>
