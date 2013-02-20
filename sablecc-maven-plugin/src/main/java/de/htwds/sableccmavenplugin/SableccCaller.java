@@ -73,6 +73,12 @@ public class SableccCaller extends AbstractMojo {
 						getLog().info("call SableCC with argv:");
 						getLog().info(argv.getArgv().toString());
 						try{
+							// TODO: because the method SableCC.main(String[] argv)
+							// does not throw any exception to tell/signal the Client
+							// but just calls System.exit(1) for any error, I can not
+							// use these method to conpile the grammar file. Therefore
+							// these options don't take any effect:
+							// --
 							SableCC.processGrammar(argv.getFile(), argv.getDestination());
 							dirs.add(argv.getDestination());
 							projectHelper.addResource( project, argv.getDestination(), 
