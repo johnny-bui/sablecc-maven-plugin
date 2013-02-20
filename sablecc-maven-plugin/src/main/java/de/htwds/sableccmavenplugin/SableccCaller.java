@@ -78,7 +78,8 @@ public class SableccCaller extends AbstractMojo {
 							// but just calls System.exit(1) for any error, I can not
 							// use these method to conpile the grammar file. Therefore
 							// these options don't take any effect:
-							// --
+							// --no-inline
+							// --inline-max-alts
 							SableCC.processGrammar(argv.getFile(), argv.getDestination());
 							dirs.add(argv.getDestination());
 							projectHelper.addResource( project, argv.getDestination(), 
