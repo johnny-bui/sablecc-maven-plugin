@@ -1,0 +1,73 @@
+/** 
+	filename   : complex.ssc
+	created on : Apr 29, 2012
+	description:
+*/
+
+/* define package-prefix */
+Package xx.yy.zz;
+Helpers 
+    a = 'l' ;
+
+States
+    normal,
+    xxxx,
+
+    sssss,
+    
+    yyyyy;
+
+/* define token */
+Tokens
+	number = ['0' .. '9']+;
+	plus = '+';
+	minus = '-';
+	mult = '*';
+	div = '/';
+	mod = '%';
+	l_par = '(';
+	r_par = ')';
+	blank = (' ' | 13 | 10)+;
+
+/* Token to be ignored */
+Ignored Tokens
+	blank;
+
+Productions
+	expr
+            {->expr}
+		= {factor}factor
+                    {-> factor.expr}
+		|{plus} expr plus factor
+                    {-> New expr.add(expr, factor.expr)}
+		|{minus} expr minus factor
+                    {-> New expr.add(expr, factor.expr)};
+
+	factor
+            {->expr}
+		= {term} term 
+                    {-> term.expr}
+		| {mult} factor mult term
+                    {-> New expr.mul(factor.expr, term.expr) }
+		| {div} factor div term
+                    {-> New expr.mul(factor.expr, term.expr)}
+		| {mod} factor mod term
+                    {-> New expr.mul(factor.expr, term.expr)}
+                ;
+
+
+	term
+            {-> expr}
+		= {number} number
+                    {-> New expr.number(number)}
+		| {expr} l_par expr r_par
+                    {-> expr};
+
+
+Abstract Syntax Tree
+	expr = 
+         {add} [e1]:expr  [e2]:expr
+	|{mul} [e1]:expr  [e2]:expr
+	|{number} [f]:number;
+
+
