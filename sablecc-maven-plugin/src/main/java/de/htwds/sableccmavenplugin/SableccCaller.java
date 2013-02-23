@@ -62,7 +62,6 @@ public class SableccCaller extends AbstractMojo {
 			if (noInline){// this warning will be removed when I can set this option
 				getLog().warn("--no-inline is set by default to TRUE !!!!!!!!!!!");
 			}
-			Log log = getLog();
 			Set<String> dirs = new HashSet<String>();
 			try{
 				// TODO: because the method SableCC.main(String[] argv)
@@ -72,13 +71,16 @@ public class SableccCaller extends AbstractMojo {
 				// these options don't take any effect:
 				// --no-inline
 				// --inline-max-alts
-				SableCC.processGrammar(grammar, destination);
-				dirs.add(destination);
-				projectHelper.addResource( project, destination, 
+				ArgumentVerifier arg = new ArgumentVerifier();
+				String validedGrammarPath = arg.verifyGrammarPath(grammar);
+				String validedDirPath = arg.verifyDestinationPath(destination);
+				SableCC.processGrammar(validedGrammarPath, validedDirPath);
+				dirs.add(validedDirPath);
+				projectHelper.addResource( project, validedDirPath, 
 						Collections.singletonList("**/**.dat"), new ArrayList() );
 			}catch(Exception ex){
-				log.error("Cannot compile the file " + grammar);
-				log.error(ex.getMessage());
+				getLog().error("Cannot compile the file " + grammar);
+				getLog().error(ex.getMessage());
 				throw new MojoFailureException("Cannot compile the file " + grammar, ex);
 			}
 			for(String d: dirs){
