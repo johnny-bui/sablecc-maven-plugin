@@ -44,7 +44,7 @@ public class AppTest
     }
 
 	public void testMySQLParser() throws ParserException, LexerException, IOException{
-		Parser p = new Parser(new Lexer(new PushbackReader(new StringReader("create table xxx;"))));
+		Parser p = new Parser(new Lexer(new PushbackReader(new StringReader("create table xxx(a integer);"))));
 		p.parse();	
 	}
 }

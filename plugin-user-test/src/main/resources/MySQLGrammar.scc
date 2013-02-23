@@ -116,7 +116,9 @@ Productions
 		| {drop} drop_clausel semicolon;
 
 /////////////////////////////////////////////////////////////////////////////////////	
-	create_clausel = create table if not exists identifier table_definition ;
+	create_clausel = create table if_not_exists? identifier table_definition ;
+	
+	if_not_exists = if not exists;
 	
 	table_definition =
 		l_par col_def addition_col_def* table_constraint_tail* r_par;

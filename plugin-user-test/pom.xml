@@ -150,7 +150,6 @@
 						(option: -d) destination directory, where the generated files 
 						are saved 
 					======================================================== -->
-					<destination>${gensource.dir}/xxxxx</destination>
 					<!--destination>${gensource.dir}/sablecc</destination-->
 					<!-- ======================================================= 
 						(option: no-inline) default false (no make any effect now)
@@ -182,7 +181,17 @@
 							<goal>sablecc</goal>
 						</goals>
 					</execution>
-				
+					
+					<execution>
+						<id>java grammar</id>
+						<configuration>
+							<grammar>src/main/resources/simple.scc</grammar>
+						</configuration>
+						<goals>
+							<goal>sablecc</goal>
+						</goals>
+					</execution>
+
 				</executions>
 			</plugin>
 		</plugins>	  
