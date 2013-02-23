@@ -140,25 +140,49 @@
 			<plugin>
 				<groupId>de.htwds</groupId>
 				<artifactId>sablecc-maven-plugin</artifactId>
-				<version>1.0-beta.1-SNAPSHOT</version>
+				<version>2.0-beta.1-SNAPSHOT</version>
+				<configuration>
+					<!-- =======================================================
+						the grammar file 
+					-->
+					<grammar>src/main/resources/MySQLGrammar.scc</grammar>
+					<!-- ======================================================= 
+						(option: -d) destination directory, where the generated files 
+						are saved 
+					======================================================== -->
+					<destination>${gensource.dir}/xxxxx</destination>
+					<!--destination>${gensource.dir}/sablecc</destination-->
+					<!-- ======================================================= 
+						(option: no-inline) default false (no make any effect now)
+					======================================================= -->
+					<noInline></noInline>
+					<!-- ======================================================= 
+						(option: inline-max-alts) default 20 (no make any effect now)
+					======================================================= -->
+					<inlineMaxAlts></inlineMaxAlts>
+				</configuration>
+				
 				<executions>
 					<execution>
+						<id>mysql grammar</id>
+						<goals>
+							<goal>sablecc</goal>
+						</goals>
+					</execution>
+					
+					
+					
+					<execution>
+						<id>complex grammar</id>
 						<configuration>
-							<grammars>
-								<grammar>
-									<file>src/main/resources/MySQLGrammar.scc</file>
-									<destination>${gensource.dir}/mysql</destination>
-								</grammar>
-								
-								<grammar>
-									<file>src/main/resources/java-1.5.scc</file>
-								</grammar>
-							</grammars>
+							<grammar>src/main/resources/complex.scc</grammar>
+							<destination>${gensource.dir}/complex</destination>
 						</configuration>
 						<goals>
 							<goal>sablecc</goal>
 						</goals>
 					</execution>
+				
 				</executions>
 			</plugin>
 		</plugins>	  

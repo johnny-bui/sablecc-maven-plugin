@@ -23,14 +23,14 @@ import org.sablecc.sablecc.SableCC;
  * Call ObjectMacro to generate Java file from ObjectMacro file.
  *
  * @author Hong Phuc Bui
- * @version 1.0-SNAPSHOT
+ * @version 2.0-SNAPSHOT
  *
  * @phase generate-resources
  */
 @Mojo(name = "sablecc", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class SableccCaller extends AbstractMojo {
 	
-	@Parameter()
+	@Parameter(defaultValue="${gensource.dir}/sablecc")
 	private String destination ;
 	
 	@Parameter(defaultValue="false")
@@ -39,9 +39,11 @@ public class SableccCaller extends AbstractMojo {
 	@Parameter(defaultValue="20")
 	private int inlineMaxAlts;	
 	
-	@Parameter(required=true)
-	private List<Map> grammars;
+	//@Parameter(required=true)
+	//private List<Map> grammars;
 
+	@Parameter(required=true)
+	private String grammar;
 
 	
 	@Parameter(defaultValue="${component.org.apache.maven.project.MavenProjectHelper}")
@@ -59,47 +61,35 @@ public class SableccCaller extends AbstractMojo {
 			if (project == null){
 				getLog().warn("project is null");
 			}
-			if (noInline){
+			if (noInline){// this warning will be removed when I can set this option
 				getLog().warn("--no-inline is set by default to TRUE !!!!!!!!!!!");
 			}
 			Argument defaultArgument = Argument.createDefaultArgument(destination, noInline, inlineMaxAlts);
 			Log log = getLog();
 			ConfigParser p = new ConfigParser(log, defaultArgument);
-			if (grammars != null){
-				Set<String> dirs = new HashSet<String>();
-				for (Map m : grammars) {
-					Argument argv = p.parseArgument(m);
-					if (argv != null) {
-						getLog().info("call SableCC with argv:");
-						getLog().info(argv.getArgv().toString());
-						try{
-							// TODO: because the method SableCC.main(String[] argv)
-							// does not throw any exception to tell/signal the Client
-							// but just calls System.exit(1) for any error, I can not
-							// use these method to conpile the grammar file. Therefore
-							// these options don't take any effect:
-							// --no-inline
-							// --inline-max-alts
-							SableCC.processGrammar(argv.getFile(), argv.getDestination());
-							dirs.add(argv.getDestination());
-							projectHelper.addResource( project, argv.getDestination(), 
-									Collections.singletonList("**/**.dat"), new ArrayList() );
-						}catch(Exception ex){
-							log.error("Cannot compile the file " + argv.getFile());
-							log.error(ex.getMessage());
-							throw new MojoFailureException("Cannot compile the file " + argv.getFile(), ex);
-						}
-					}
-				}
-				for(String d: dirs){
-					getLog().info("add " + d + " to resources");
-					project.addCompileSourceRoot(d);
-				}
-			}else{
-				//TODO: What is the convenient behavior if there are not 
-				// templated files? I just put an warning out on screen.
-				getLog().warn("no tag <grammars> found");
+			Set<String> dirs = new HashSet<String>();
+			try{
+				// TODO: because the method SableCC.main(String[] argv)
+				// does not throw any exception to tell/signal the Client
+				// but just calls System.exit(1) for any error, I can not
+				// use these method to conpile the grammar file. Therefore
+				// these options don't take any effect:
+				// --no-inline
+				// --inline-max-alts
+				SableCC.processGrammar(grammar, destination);
+				dirs.add(destination);
+				projectHelper.addResource( project, destination, 
+						Collections.singletonList("**/**.dat"), new ArrayList() );
+			}catch(Exception ex){
+				log.error("Cannot compile the file " + grammar);
+				log.error(ex.getMessage());
+				throw new MojoFailureException("Cannot compile the file " + grammar, ex);
 			}
+			for(String d: dirs){
+				getLog().info("add " + d + " to generated source files");
+				project.addCompileSourceRoot(d);
+			}
+			
 		} catch (RuntimeException ex) {
 			throw new MojoFailureException("Compile grammar file error: " + ex.getMessage(), ex);
 		} catch (Exception ex) {
