@@ -93,22 +93,20 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.4</version>
 			</plugin>
-			<!--	
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.4</version>
-					<executions>
-						<execution>
-							<id>sign-artifacts</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			-->	
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
   
@@ -165,15 +163,17 @@
 		Define this property in your settings.xml! 
 	=========================================================== -->
 	<distributionManagement>
-		<!--repository>
+		<repository>
 			<id>internal.repo</id>
 			<name>Internal Repository</name>
 			<url>${internal.repo.path}</url>
-		</repository-->
+		</repository>
+		<!--
 		<snapshotRepository>
 			<id>sonatype-nexus-snapshots</id>
 			<name>sonatype</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</snapshotRepository>
+		-->
 	</distributionManagement>
 </project>

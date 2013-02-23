@@ -3,8 +3,6 @@ package de.htwds.sableccmavenplugin;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.project.MavenProjectHelper;
@@ -20,7 +18,7 @@ import org.apache.maven.project.MavenProject;
 import org.sablecc.sablecc.SableCC;
 
 /**
- * Call ObjectMacro to generate Java file from ObjectMacro file.
+ * Call SableCC to generate Java file from ObjectMacro file.
  *
  * @author Hong Phuc Bui
  * @version 2.0-SNAPSHOT
@@ -64,9 +62,7 @@ public class SableccCaller extends AbstractMojo {
 			if (noInline){// this warning will be removed when I can set this option
 				getLog().warn("--no-inline is set by default to TRUE !!!!!!!!!!!");
 			}
-			Argument defaultArgument = Argument.createDefaultArgument(destination, noInline, inlineMaxAlts);
 			Log log = getLog();
-			ConfigParser p = new ConfigParser(log, defaultArgument);
 			Set<String> dirs = new HashSet<String>();
 			try{
 				// TODO: because the method SableCC.main(String[] argv)
