@@ -17,102 +17,6 @@
 	
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>de.htwds</groupId>
-				<artifactId>objectmacro-maven-plugin</artifactId>
-				<version>1.0-beta.1</version>
-				<!-- =============================================
-					All config parameters here are used for 
-					every objectmacro files defined below, unless
-					they are override in the tag <template>
-
-					The default target language is java, which is
-					not shown here. You can use it like 
-					<language>scala</language>.
-
-					To config the flag informativ (-i), quiet (-q), or
-					verbose (-v) you can use the tag 
-					<informativ>informativ|quiet|verbose</informativ>.
-					The default value is informativ.
-				================================================== -->
-				<configuration>
-					<!-- by default code will be generated 
-						(the option -g)
-					-->
-					<generateCode>true</generateCode>
-					<!-- and the plugin uses the the option strict 
-						(the option -s  of objectmacro).
-					-->
-					<strict>true</strict>
-					<!-- All generated file will be saved in this folder  
-						(the option -d directory). 
-						
-						The default value is
- 						${basedir}/target/generated-sources/objectmacro
-					-->
-					<directory>${gensource.dir}/objectmacro</directory>
-					<!-- This is the destinate package for all template
-						(the option -p packagename).
-
-						The default value ist template.
-					-->
-					<packagename>de.htwsaarland.sql.imp.template</packagename>
-				</configuration>
-				<executions>
-					<execution>
-						<!-- ================================================== 
-							you can define particular options for each template
-							file if you need. These option override the options
-							defined above.
-						==================================================== -->
-						<configuration>
-							<templates>
-								<!-- 
-									a template contains one and only one tag 
-									<file>. The file is the template file, from which
-									you want to generate target code for your templates.
-								-->
-								<template>
-									<file>src/main/resources/sqltemplate.objectmacro</file>
-								</template>
-								<template>
-									<file>src/main/resources/simple.objectmacro</file>
-									<language>scala</language>
-									<packagename>de.htwds</packagename>
-								</template>
-								<!-- 
-									This template has not the <file>-tag, that 
-									causes a Maven warning 
-								-->
-								<template>
-								</template>
-								<template>
-									<file>src/main/resources/notsosimple.objectmacro</file>
-									<!-- 
-										If you use an absolute path for the 
-										destinate directory, you must manual remove the 
-										generate file, since Maven can remove only the directory
-										"target". Furthermore, som IDE cannot recognize the
-										source outside of the target/generated-sources. So
-										absolute path is not recommended
-									-->
-									<!--
-									<directory>/tmp/objectmacro</directory>
-									-->
-								</template>
-							</templates>
-						</configuration>
-						<!-- ===================================================
-							the plugin provides only one goal: objectmacro. This
-							goal is called in the generate-sources phase. 
-						=================================================== -->
-						<goals>
-							<goal>objectmacro</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
 			<!-- ==========================================================
 				You need this plugin to tell Maven to add the generated source
 				in sources. Otherwise you cannot compile files, which depends
@@ -148,12 +52,17 @@
 					<grammar>src/main/resources/MySQLGrammar.scc</grammar>
 					<!-- ======================================================= 
 						(option: -d) destination directory, where the generated files 
-						are saved 
+						are saved. The default is shown below in comments.
+						With this configuration the generated files are save in
+						${gensource.dir}/xxxx as default.
 					======================================================== -->
-					<!--destination>${gensource.dir}/sablecc</destination-->
+					<!-- destination>${gensource.dir}/sablecc</destination -->
+					<destination>${gensource.dir}/xxxx</destination>
+					
 					<!-- ======================================================= 
 						(option: no-inline) default false (no make any effect now)
 					======================================================= -->
+
 					<noInline></noInline>
 					<!-- ======================================================= 
 						(option: inline-max-alts) default 20 (no make any effect now)
@@ -163,15 +72,37 @@
 				
 				<executions>
 					<execution>
+						<!-- this execution will call sablecc for the file
+							src/main/resources/MySQLGrammar.scc
+							If you have only one grammar, you just nedd only the 
+							tag goals|goal|sablecc to call sablecc. You don't
+							even need the tag ID.
+						-->
 						<id>mysql grammar</id>
 						<goals>
 							<goal>sablecc</goal>
 						</goals>
 					</execution>
 					
-					
-					
 					<execution>
+						<!-- This execution will call sablecc for the file
+							src/main/resources/complex.scc
+							and save all generated files in 
+							${gensource.dir}/complex
+							because the tag grammar and destination are set here.
+
+							If you have more than one grammar files, you must
+							set the tag grammar to point to one of your grammar files
+							in each execution tag. You must also provide an id tag
+							for each execution.
+
+							If you don't set the tag destination for each execution, 
+							the generated 
+							files are saved in the default directory, which is
+							either defined in the "global" configuration tag
+							above, or is the implicit default value 
+							${gensource.dir}/sablecc
+						-->
 						<id>complex grammar</id>
 						<configuration>
 							<grammar>src/main/resources/complex.scc</grammar>
@@ -183,7 +114,10 @@
 					</execution>
 					
 					<execution>
-						<id>java grammar</id>
+						<!-- this execution demonstrates the explanation in the
+							execution "complex grammar" above.
+						-->
+						<id>simple grammar</id>
 						<configuration>
 							<grammar>src/main/resources/simple.scc</grammar>
 						</configuration>

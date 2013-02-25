@@ -6,8 +6,6 @@
 	<artifactId>sablecc-maven-plugin</artifactId>
 	<version>2.0-beta.1-SNAPSHOT</version>
 	
-	
-	
 	<name>sablecc-maven-plugin</name>
 	<description>
 		Plugin to generate parser from SableCC files using SableCC 3.7
@@ -21,6 +19,9 @@
 		<developer>
 			<name>Hong Phuc Bui aka. verylazyboy</name>
 			<email>phucluoi@gmail.com</email>
+			<roles>
+				<role>owner,developer</role>
+			</roles>
 		</developer>
 	</developers>
 
@@ -33,9 +34,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:git@github.com:verylazyboy/maven-plugin.git</connection>
-		<url>scm:git:git@github.com:verylazyboy/maven-plugin.git</url>
-		<developerConnection>git@github.com:verylazyboy/maven-plugin.git</developerConnection>
+		<connection>scm:git:git@github.com:verylazyboy/sablecc-maven-plugin.git</connection>
+		<url>scm:git:git@github.com:verylazyboy/sablecc-maven-plugin.git</url>
+		<developerConnection>git@github.com:verylazyboy/sablecc-maven-plugin.git</developerConnection>
 	</scm>
 	
 	<prerequisites>
@@ -44,10 +45,44 @@
 	
 	<inceptionYear>2013</inceptionYear>
 
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
+	<profiles>
+		<!-- ===================================================================
+		use this profile to sign the plugin before publish it in sonatype
+		repository. Usage:
+		mvn -P sign-artifact clean install deploy
+		===================================================================-->
+		<profile>
+			<id>sign-artifact</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	
 	<build>
 		<plugins>
@@ -84,26 +119,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.4</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+					
 		</plugins>
 	</build>
   
