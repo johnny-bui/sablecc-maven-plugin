@@ -1,4 +1,4 @@
-package de.htwds.sableccmavenplugin;
+package com.github.verylazyboy;
 
 import java.util.ArrayList;
 import java.util.Collections;

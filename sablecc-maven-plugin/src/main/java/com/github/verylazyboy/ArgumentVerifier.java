@@ -1,5 +1,5 @@
 
-package de.htwds.sableccmavenplugin;
+package com.github.verylazyboy;
 
 import java.io.File;
 
