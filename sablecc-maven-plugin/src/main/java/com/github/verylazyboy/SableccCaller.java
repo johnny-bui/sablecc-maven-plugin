@@ -28,7 +28,7 @@ import org.sablecc.sablecc.SableCC;
 @Mojo(name = "sablecc", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class SableccCaller extends AbstractMojo {
 	
-	@Parameter(defaultValue="${gensource.dir}/sablecc")
+	@Parameter(defaultValue="${basedir}/target/generated-sources/sablecc")
 	private String destination ;
 	
 	@Parameter(defaultValue="false")
