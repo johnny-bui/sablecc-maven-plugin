@@ -4,7 +4,7 @@
 
 	<groupId>com.github.verylazyboy</groupId>
 	<artifactId>sablecc-maven-plugin</artifactId>
-	<version>2.0-beta.2-SNAPSHOT</version>
+	<version>2.0-beta.2</version>
 	
 	<name>sablecc-maven-plugin</name>
 	<description>
@@ -35,8 +35,8 @@
 
 	<scm>
 		<connection>scm:git:git@github.com:verylazyboy/sablecc-maven-plugin.git</connection>
-		<url>scm:git:git@github.com:verylazyboy/sablecc-maven-plugin.git</url>
-		<developerConnection>git@github.com:verylazyboy/sablecc-maven-plugin.git</developerConnection>
+		<url>git@github.com:verylazyboy/sablecc-maven-plugin.git</url>
+		<developerConnection>scm:git@github.com:verylazyboy/sablecc-maven-plugin.git</developerConnection>
 	</scm>
 	
 	<prerequisites>
@@ -53,7 +53,7 @@
 		<!-- ===================================================================
 		use this profile to sign the plugin before publish it in sonatype
 		repository. Usage:
-		mvn -P sign-artifact clean install deploy
+		mvn -P sign-artifact -Darguments=-Dgpg.passphrase=PASSPHRASE clean install deploy
 		===================================================================-->
 		<profile>
 			<id>sign-artifact</id>
@@ -177,9 +177,14 @@
 	=========================================================== -->
 	<distributionManagement>
 		<repository>
-			<id>internal.repo</id>
-			<name>Internal Repository</name>
-			<url>${internal.repo.path}</url>
+			<id>sonatype-nexus-staging</id>
+			<name>Sonatype Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 	</distributionManagement>
 </project>
