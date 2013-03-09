@@ -1,0 +1,30 @@
+<settings xmlns:profile="http://maven.apache.org/SETTINGS/1.0.0">
+	..... 
+	<profiles>
+		<profile>
+			<id>test</id>
+			<repositories>
+				<repository>
+					<id>sonatype.public.rep</id>
+					<url>https://oss.sonatype.org/content/groups/public/</url>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>always</updatePolicy>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>sonatype.public.rep</id>
+					<url>https://oss.sonatype.org/content/groups/public/</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+	.... 
+	<activeProfiles>
+		<!--make the profile active all the time -->
+		<activeProfile>test</activeProfile>
+	</activeProfiles>
+</settings>
+
