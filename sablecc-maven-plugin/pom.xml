@@ -158,8 +158,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.sablecc</groupId>
-			<artifactId>sablecc</artifactId>
+			<groupId>com.github.verylazyboy</groupId>
+			<artifactId>sablecc-maven-port</artifactId>
 			<version>3.7</version>
 		</dependency>
 		
