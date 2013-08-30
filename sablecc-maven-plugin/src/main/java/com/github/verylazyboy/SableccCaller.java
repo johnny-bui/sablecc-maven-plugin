@@ -1,5 +1,6 @@
 package com.github.verylazyboy;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import org.apache.maven.project.MavenProjectHelper;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -27,6 +29,10 @@ import org.sablecc.sablecc.SableCC;
 @Mojo(name = "sablecc", defaultPhase = LifecyclePhase.GENERATE_SOURCES,threadSafe = true)
 public class SableccCaller extends AbstractMojo {
 	
+	/**
+	 * where to write the generated parser. Default:
+	 * {@code ${basedir}/target/generated-sources/sablecc}
+	 */
 	@Parameter(defaultValue="${basedir}/target/generated-sources/sablecc")
 	private String destination ;
 	
@@ -36,9 +42,9 @@ public class SableccCaller extends AbstractMojo {
 	@Parameter(defaultValue="20")
 	private int inlineMaxAlts;	
 	
-	//@Parameter(required=true)
-	//private List<Map> grammars;
-
+	@Parameter(required = false, defaultValue = "")
+	private String outputPackage;
+	
 	@Parameter(required=true)
 	private String grammar;
 
@@ -48,6 +54,8 @@ public class SableccCaller extends AbstractMojo {
 	
 	@Parameter(defaultValue="${project}")
 	private MavenProject project;
+	
+
 	
 	@Override
 	public void execute() throws MojoFailureException {
@@ -73,7 +81,13 @@ public class SableccCaller extends AbstractMojo {
 				ArgumentVerifier arg = new ArgumentVerifier();
 				String validedGrammarPath = arg.verifyGrammarPath(grammar);
 				String validedDirPath = arg.verifyDestinationPath(destination);
-				SableCC.processGrammar(validedGrammarPath, validedDirPath);
+				if(neeedCompile(validedGrammarPath,validedDirPath)){
+					getLog().debug("Need to compile grammar " + validedGrammarPath);
+					SableCC.processGrammar(validedGrammarPath, validedDirPath);
+				}else{
+					getLog().info("Not need to compile " + validedGrammarPath);
+					getLog().info("Clean output directory to force re-compile the grammar file " + validedGrammarPath);
+				}
 				dirs.add(validedDirPath);
 				projectHelper.addResource( project, validedDirPath, 
 						Collections.singletonList("**/**.dat"), new ArrayList() );
@@ -91,6 +105,38 @@ public class SableccCaller extends AbstractMojo {
 			throw new MojoFailureException("Compile grammar file error: " + ex.getMessage(), ex);
 		} catch (Exception ex) {
 			throw new MojoFailureException("Compile grammar file error: " + ex.getMessage(), ex);
+		}
+	}
+
+	private boolean neeedCompile(String grammar, String destination) {
+		if (outputPackage==null || outputPackage.trim().length()==0){
+			getLog().info("No output package given or the given outputPackage is an empty string");
+			getLog().info(" Cannot calcualte time stame");
+			getLog().info(" Grammar will be recompiled");
+			return true;
+		}else{
+			String generatedParserPath = 
+					destination 
+					+ "/" 
+					+ outputPackage.replace(".", "/") 
+					+ "/parser/Parser.java";
+			getLog().debug("Check time stamp for the file:" + generatedParserPath);
+			File parserFile = new File(generatedParserPath);
+			if (parserFile.isFile()){// if the parser file exists
+				long parserLastModi = parserFile.lastModified();
+				getLog().debug("*********************** Last modi time of parser:" + parserLastModi);
+				File grammarFile  = new File(grammar);
+				long grammarLastModi = grammarFile.lastModified();
+				getLog().debug("*********************** Last modi time of grammar:" + grammarLastModi);
+				if (grammarLastModi > parserLastModi){// the grammar file older than the parser file
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return true;
+			}
+			
 		}
 	}
 }
