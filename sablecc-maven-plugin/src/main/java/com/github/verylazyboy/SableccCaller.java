@@ -9,7 +9,6 @@ import org.apache.maven.project.MavenProjectHelper;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -25,7 +24,7 @@ import org.sablecc.sablecc.SableCC;
  *
  * @phase generate-resources
  */
-@Mojo(name = "sablecc", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "sablecc", defaultPhase = LifecyclePhase.GENERATE_SOURCES,threadSafe = true)
 public class SableccCaller extends AbstractMojo {
 	
 	@Parameter(defaultValue="${basedir}/target/generated-sources/sablecc")
