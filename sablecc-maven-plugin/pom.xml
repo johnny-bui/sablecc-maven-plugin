@@ -45,10 +45,32 @@
 	
 	<inceptionYear>2013</inceptionYear>
 
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!--maven variable which points to your local repository -->
+		<internal.repo.path>file:///home/hbui/mvn-repo/</internal.repo.path>
 	</properties>
 	
+	<distributionManagement>
+		<!-- sonatype -->
+		<!--repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Sonatype Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository -->
+		<repository>
+			<id>internal.repo</id>
+			<name>Internal Repository</name>
+			<url>${internal.repo.path}</url>
+		</repository>
+	</distributionManagement>
+
 	<profiles>
 		<!-- ===================================================================
 		use this profile to sign the plugin before publish it in sonatype
@@ -170,21 +192,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
-	
-	<!-- ================ C A U T I O N =======================
-		Define this property in your settings.xml! 
-	=========================================================== -->
-	<distributionManagement>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Sonatype Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-		</repository>
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Repository</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>
