@@ -2,6 +2,7 @@
 package com.github.verylazyboy;
 
 import java.io.File;
+import org.apache.maven.project.MavenProject;
 
 /**
  * Can use a Strategy Pattern to make the check of valid grammar file and
@@ -14,6 +15,7 @@ public class ArgumentVerifier {
 	
 	private String destination;
 	private String grammar;
+
 	
 
 	public final String verifyGrammarPath(String grammar) throws RuntimeException{
