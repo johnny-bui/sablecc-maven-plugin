@@ -16,6 +16,13 @@
         <module>sablecc-maven-plugin</module>
 		<module>sablecc-plugin-user-test</module>
     </modules>
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Internal Repository</name>
+			<url>${internal.repo.path}</url>
+		</repository>
+	</distributionManagement>
 	<build>
         <pluginManagement>
             <plugins>

@@ -14,7 +14,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gensource.dir>${basedir}/target/generated-sources</gensource.dir>
 	</properties>
-	
+
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Internal Repository</name>
+			<url>${internal.repo.path}</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			
