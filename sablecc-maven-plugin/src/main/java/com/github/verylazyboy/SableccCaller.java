@@ -10,7 +10,6 @@ import org.apache.maven.project.MavenProjectHelper;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -80,7 +79,7 @@ public class SableccCaller extends AbstractMojo {
 				if(!destinateDir.isAbsolute()){
 					destinateDir = new File(project.getBasedir(), destination);
 				}
-				String validedDirPath = arg.verifyDestinationPath(destination);
+				String validedDirPath = arg.verifyDestinationPath(destinateDir.getAbsolutePath());
 				if (neeedCompile(validedGrammarPath, validedDirPath)) {
 					getLog().debug("Need to compile grammar " + validedGrammarPath);
 					SableCC.processGrammar(validedGrammarPath, validedDirPath);

@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.htwds</groupId>
-	<artifactId>plugin-user-test</artifactId>
+	<artifactId>sablecc-plugin-user-test</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
-	<name>plugin-user-test</name>
+	<name>sablecc-plugin-user-test</name>
+	
 	<url>https://github.com/johnny-bui/maven-plugin/tree/master/plugin-user-test</url>
 
 	<properties>
@@ -48,21 +48,20 @@
 				</configuration>
 				
 				<executions>
-					<execution>
-						<!-- this execution will call sablecc for the file
+					<!-- this execution will call sablecc for the file
 							src/main/resources/MySQLGrammar.scc
 							If you have only one grammar, you just nedd only the 
 							tag goals|goal|sablecc to call sablecc. You don't
 							even need the tag ID.
-						-->
+					-->
+					<execution>
 						<id>mysql grammar</id>
 						<goals>
 							<goal>sablecc</goal>
 						</goals>
 					</execution>
-					
-					<execution>
-						<!-- This execution will call sablecc for the file
+
+					<!-- This execution will call sablecc for the file
 							src/main/resources/complex.scc
 							and save all generated files in 
 							${gensource.dir}/complex
@@ -80,7 +79,21 @@
 							above, or is the implicit default value 
 							${gensource.dir}/sablecc
 						-->
+					<execution>
 						<id>complex grammar</id>
+						<configuration>
+							<grammar>src/main/resources/complex.scc</grammar>
+							<destination>${gensource.dir}/java_g</destination>
+							<outputPackage>xx.yy.zz</outputPackage>
+						</configuration>
+						<goals>
+							<goal>sablecc</goal>
+						</goals>
+					</execution>
+					
+					<!--
+					<execution>
+						<id>java grammar</id>
 						<configuration>
 							<grammar>src/main/resources/java-1.5.scc</grammar>
 							<destination>${gensource.dir}/java_g</destination>
@@ -90,7 +103,8 @@
 							<goal>sablecc</goal>
 						</goals>
 					</execution>
-					
+					--> 
+						
 					<execution>
 						<!-- this execution demonstrates the explanation in the
 							execution "complex grammar" above.
