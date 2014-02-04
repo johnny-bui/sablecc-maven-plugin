@@ -29,7 +29,7 @@
 			<plugin>
 				<groupId>com.github.verylazyboy</groupId>
 				<artifactId>sablecc-maven-plugin</artifactId>
-				<version>2.0-beta.4</version>
+				<version>2.0-beta.5</version>
 				<configuration>
 					<!-- =======================================================
 						the grammar file 
@@ -126,6 +126,23 @@
 						</goals>
 					</execution>
 
+					<execution>
+						<!-- This execution demonstrates that the plugin search the
+						file MySQLGrammarCopy.scc in the folder 
+						${basedir}/src/main/sablecc
+						if there is no Folder-Separator in the configuration-parameter
+						<grammar>
+						-->
+						<id>found sablecc file in sablecc dir</id>
+						<configuration>
+							<grammar>MySQLGrammarCopy.scc</grammar>
+							<outputPackage>mysqlgrm.copy</outputPackage>
+							<destination>${gensource.dir}/sablecc</destination>
+						</configuration>
+						<goals>
+							<goal>sablecc</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>	  

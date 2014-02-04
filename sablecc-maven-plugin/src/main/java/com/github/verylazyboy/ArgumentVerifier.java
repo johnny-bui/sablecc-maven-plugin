@@ -2,7 +2,6 @@
 package com.github.verylazyboy;
 
 import java.io.File;
-import org.apache.maven.project.MavenProject;
 
 /**
  * Can use a Strategy Pattern to make the check of valid grammar file and
@@ -14,7 +13,6 @@ import org.apache.maven.project.MavenProject;
 public class ArgumentVerifier {
 	
 	private String destination;
-	private String grammar;
 
 	
 
@@ -28,7 +26,6 @@ public class ArgumentVerifier {
 			throw new RuntimeException("The path " + grammar + " is a directory");
 		}
 
-		this.grammar = grammarFile.getAbsolutePath();
 		return grammar;
 	}
 

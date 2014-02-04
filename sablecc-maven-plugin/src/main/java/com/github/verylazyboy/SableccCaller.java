@@ -46,7 +46,10 @@ public class SableccCaller extends AbstractMojo {
 	private MavenProjectHelper projectHelper;
 	@Parameter(defaultValue = "${project}")
 	private MavenProject project;
-
+	
+	@Parameter(defaultValue = "${basedir}/src/main/sablecc")
+	private String sableccDirPath;
+	
 	@Override
 	public void execute() throws MojoFailureException {
 		try {
@@ -69,10 +72,7 @@ public class SableccCaller extends AbstractMojo {
 				// --no-inline
 				// --inline-max-alts
 				ArgumentVerifier arg = new ArgumentVerifier();
-				File grammarFile = new File(grammar);
-				if (!grammarFile.isAbsolute()) {
-					grammarFile = new File(project.getBasedir(), grammar);
-				}
+				File grammarFile = guessSableCCFile(grammar);
 				String validedGrammarPath 
 						= arg.verifyGrammarPath(grammarFile.getAbsolutePath());
 				File destinateDir = new File(destination);
@@ -107,6 +107,20 @@ public class SableccCaller extends AbstractMojo {
 		}
 	}
 
+	private File guessSableCCFile(String grammarConfigParam){
+		if (grammarConfigParam.contains(File.separator)){
+			File grammarFile = new File(grammarConfigParam);
+			if (!grammarFile.isAbsolute()) {
+				grammarFile = new File(project.getBasedir(), grammarConfigParam);
+			}
+			return grammarFile;
+		}else{
+			File sableccDir = new File(sableccDirPath);
+			File grammarFile = new File(sableccDir,grammarConfigParam);
+			return grammarFile;
+		}
+	}	
+	
 	private boolean neeedCompile(String grammar, String destination) {
 		if (outputPackage == null || outputPackage.trim().length() == 0) {
 			getLog().info("No output package given or the given outputPackage is an empty string");
