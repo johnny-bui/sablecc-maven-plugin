@@ -2,3 +2,4 @@
 /plugin-user-test/target/
 /plugin-user-test/${gensource.dir}/objectmacro/
 /sablecc-maven-plugin/target/
+/sablecc-plugin-user-test/target/

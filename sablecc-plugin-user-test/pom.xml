@@ -3,25 +3,33 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.htwds</groupId>
-	<artifactId>plugin-user-test</artifactId>
+	<artifactId>sablecc-plugin-user-test</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
-	<name>plugin-user-test</name>
+	<name>sablecc-plugin-user-test</name>
+	
 	<url>https://github.com/johnny-bui/maven-plugin/tree/master/plugin-user-test</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gensource.dir>${basedir}/target/generated-sources</gensource.dir>
 	</properties>
-	
+
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Internal Repository</name>
+			<url>${internal.repo.path}</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			
 			<plugin>
 				<groupId>com.github.verylazyboy</groupId>
 				<artifactId>sablecc-maven-plugin</artifactId>
-				<version>2.0-beta.2-thread-safe</version>
+				<version>2.0-beta.5</version>
 				<configuration>
 					<!-- =======================================================
 						the grammar file 
@@ -48,21 +56,20 @@
 				</configuration>
 				
 				<executions>
-					<execution>
-						<!-- this execution will call sablecc for the file
+					<!-- this execution will call sablecc for the file
 							src/main/resources/MySQLGrammar.scc
 							If you have only one grammar, you just nedd only the 
 							tag goals|goal|sablecc to call sablecc. You don't
 							even need the tag ID.
-						-->
+					-->
+					<execution>
 						<id>mysql grammar</id>
 						<goals>
 							<goal>sablecc</goal>
 						</goals>
 					</execution>
-					
-					<execution>
-						<!-- This execution will call sablecc for the file
+
+					<!-- This execution will call sablecc for the file
 							src/main/resources/complex.scc
 							and save all generated files in 
 							${gensource.dir}/complex
@@ -80,16 +87,32 @@
 							above, or is the implicit default value 
 							${gensource.dir}/sablecc
 						-->
+					<execution>
 						<id>complex grammar</id>
 						<configuration>
-							<grammar>src/main/resources/java-1.5.scc</grammar>
+							<grammar>src/main/resources/complex.scc</grammar>
 							<destination>${gensource.dir}/java_g</destination>
+							<outputPackage>xx.yy.zz</outputPackage>
 						</configuration>
 						<goals>
 							<goal>sablecc</goal>
 						</goals>
 					</execution>
 					
+					<!--
+					<execution>
+						<id>java grammar</id>
+						<configuration>
+							<grammar>src/main/resources/java-1.5.scc</grammar>
+							<destination>${gensource.dir}/java_g</destination>
+							<outputPackage>org.sablecc.grammars.java_1_5</outputPackage>
+						</configuration>
+						<goals>
+							<goal>sablecc</goal>
+						</goals>
+					</execution>
+					--> 
+						
 					<execution>
 						<!-- this execution demonstrates the explanation in the
 							execution "complex grammar" above.
@@ -103,6 +126,23 @@
 						</goals>
 					</execution>
 
+					<execution>
+						<!-- This execution demonstrates that the plugin search the
+						file MySQLGrammarCopy.scc in the folder 
+						${basedir}/src/main/sablecc
+						if there is no Folder-Separator in the configuration-parameter
+						<grammar>
+						-->
+						<id>found sablecc file in sablecc dir</id>
+						<configuration>
+							<grammar>MySQLGrammarCopy.scc</grammar>
+							<outputPackage>mysqlgrm.copy</outputPackage>
+							<destination>${gensource.dir}/sablecc</destination>
+						</configuration>
+						<goals>
+							<goal>sablecc</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>	  

@@ -13,7 +13,7 @@ import java.io.File;
 public class ArgumentVerifier {
 	
 	private String destination;
-	private String grammar;
+
 	
 
 	public final String verifyGrammarPath(String grammar) throws RuntimeException{
@@ -26,7 +26,6 @@ public class ArgumentVerifier {
 			throw new RuntimeException("The path " + grammar + " is a directory");
 		}
 
-		this.grammar = grammarFile.getAbsolutePath();
 		return grammar;
 	}
 

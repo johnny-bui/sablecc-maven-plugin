@@ -1,15 +1,12 @@
 package de.htwds.pluginusertest;
 
-import java.io.IOException;
 import java.io.PushbackReader;
 import java.io.StringReader;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import mysqlgrm.lexer.Lexer;
-import mysqlgrm.lexer.LexerException;
 import mysqlgrm.parser.Parser;
-import mysqlgrm.parser.ParserException;
 
 /**
  * Unit test for simple App.
@@ -43,8 +40,12 @@ public class AppTest
         assertTrue( true );
     }
 
-	public void testMySQLParser() throws ParserException, LexerException, IOException{
-		Parser p = new Parser(new Lexer(new PushbackReader(new StringReader("create table xxx(a integer);"))));
-		p.parse();	
+	public void testMySQLParser() {
+		try {
+			mysqlgrm.parser.Parser p = new Parser(new Lexer(new PushbackReader(new StringReader("truncate table xxx;"))));
+			p.parse();
+		} catch (Exception ex){
+			fail("Not expected any exceptions.");
+		}
 	}
 }
