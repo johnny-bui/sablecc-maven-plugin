@@ -1,183 +1,188 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.verylazyboy</groupId>
-	<artifactId>sablecc-maven-plugin</artifactId>
-	<version>2.0-beta.5</version>
+    <groupId>com.github.verylazyboy</groupId>
+    <artifactId>sablecc-maven-plugin</artifactId>
+    <version>2.0-beta.5</version>
 	
-	<name>sablecc-maven-plugin</name>
-	<description>
-		Plugin to generate parser from SableCC files using SableCC 3.7
-		New kind of configuration 
-	</description>
-	<url>https://github.com/johnny-bui/maven-plugin/tree/master/sablecc-maven-plugin</url>
+    <name>sablecc-maven-plugin</name>
+    <description>
+        Plugin to generate parser from SableCC files using SableCC 3.7
+        New kind of configuration 
+    </description>
+    <url>https://github.com/johnny-bui/maven-plugin/tree/master/sablecc-maven-plugin</url>
 	
-	<packaging>maven-plugin</packaging>
+    <packaging>maven-plugin</packaging>
 	
-	<developers>
-		<developer>
-			<name>Hong Phuc Bui aka. verylazyboy</name>
-			<email>phucluoi@gmail.com</email>
-			<roles>
-				<role>owner,developer</role>
-			</roles>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <name>Hong Phuc Bui aka. verylazyboy</name>
+            <email>phucluoi@gmail.com</email>
+            <roles>
+                <role>owner,developer</role>
+            </roles>
+        </developer>
+    </developers>
 
-	<licenses>
-		<license>
-			<name>The BSD 3-Clause License</name>
-			<url>http://opensource.org/licenses/BSD-3-Clause</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>The BSD 3-Clause License</name>
+            <url>http://opensource.org/licenses/BSD-3-Clause</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-	<scm>
-		<connection>scm:git:git@github.com:johnny-bui/sablecc-maven-plugin.git</connection>
-		<url>git@github.com:johnny-bui/sablecc-maven-plugin.git</url>
-		<developerConnection>scm:git@github.com:johnny-bui/sablecc-maven-plugin.git</developerConnection>
-	</scm>
+    <scm>
+        <connection>scm:git:git@github.com:johnny-bui/sablecc-maven-plugin.git</connection>
+        <url>git@github.com:johnny-bui/sablecc-maven-plugin.git</url>
+        <developerConnection>scm:git@github.com:johnny-bui/sablecc-maven-plugin.git</developerConnection>
+    </scm>
 	
-	<prerequisites>
-		<maven>3.0+</maven>
-	</prerequisites>
+    <prerequisites>
+        <maven>3.0+</maven>
+    </prerequisites>
 	
-	<inceptionYear>2013</inceptionYear>
+    <inceptionYear>2013</inceptionYear>
 
 	
-	<distributionManagement>
-		<repository>
-			<id>newton</id>
-			<name>newton-releases</name>
-			<url>http://newton.htw-saarland.de:8085/artifactory/ext-release-local</url>
-		</repository>
-		<snapshotRepository>
-			<id>newton</id>
-			<name>newton-snapshots</name>
-			<url>http://newton.htw-saarland.de:8085/artifactory/ext-snapshot-local</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<profiles>
-		<!-- ===================================================================
-		use this profile to sign the plugin before publish it in sonatype
-		repository. Usage:
-		mvn -P sign-artifact -Darguments=-Dgpg.passphrase=PASSPHRASE clean install deploy
-		===================================================================-->
-		<profile>
-			<id>sign-artifact</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.4</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+    <distributionManagement>
+        <repository>
+            <id>newton</id>
+            <name>newton-releases</name>
+            <url>http://newton.htw-saarland.de:8085/artifactory/plugins-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>newton</id>
+            <name>newton-snapshots</name>
+            <url>http://newton.htw-saarland.de:8085/artifactory/plugin-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+    
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    <profiles>
+        <!-- ===================================================================
+        use this profile to sign the plugin before publish it in sonatype
+        repository. Usage:
+        mvn -P sign-artifact -Darguments=-Dgpg.passphrase=PASSPHRASE clean install deploy
+        ===================================================================-->
+        <profile>
+            <id>sign-artifact</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.4</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 	
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-plugin-plugin</artifactId>
-				<version>3.2</version>
-				<configuration>
-					<!-- see http://jira.codehaus.org/browse/MNG-5346 -->
-					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-				</configuration>
-				<executions>
-					<execution>
-						<id>mojo-descriptor</id>
-						<goals>
-							<goal>descriptor</goal>
-						</goals>
-					</execution>
-					<!-- if you want to generate help goal -->
-					<execution>
-						<id>help-goal</id>
-						<goals>
-							<goal>helpmojo</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<!--configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration-->
-			</plugin>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <!-- see http://jira.codehaus.org/browse/MNG-5346 -->
+                    <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>mojo-descriptor</id>
+                        <goals>
+                            <goal>descriptor</goal>
+                        </goals>
+                    </execution>
+                    <!-- if you want to generate help goal -->
+                    <execution>
+                        <id>help-goal</id>
+                        <goals>
+                            <goal>helpmojo</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <!--configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                </configuration-->
+            </plugin>
 					
-		</plugins>
-	</build>
+        </plugins>
+    </build>
   
-	<dependencies>
-		<!-- dependencies to annotations -->
-		<dependency>
-			<groupId>org.apache.maven.plugin-tools</groupId>
-			<artifactId>maven-plugin-annotations</artifactId>
-			<version>3.1</version>
-			<!-- 
-		annotations are not needed for plugin 
-		execution so you can remove this dependency
-				for execution with using provided scope 
-			-->
-			<scope>provided</scope>
-		</dependency>
-		<!-- generated help mojo has a dependency to plexus-utils -->
-		<dependency>
-			<groupId>org.codehaus.plexus</groupId>
-			<artifactId>plexus-utils</artifactId>
-			<version>2.0.6</version>
-			<scope>test</scope>
-		</dependency>
+    <dependencies>
+        <!-- dependencies to annotations -->
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.1</version>
+            <!-- 
+    annotations are not needed for plugin 
+    execution so you can remove this dependency
+                    for execution with using provided scope 
+            -->
+            <scope>provided</scope>
+        </dependency>
+        <!-- generated help mojo has a dependency to plexus-utils -->
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>2.0.6</version>
+            <scope>test</scope>
+        </dependency>
 		
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-plugin-api</artifactId>
-			<version>3.0</version>
-			<type>jar</type>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>3.0</version>
+            <type>jar</type>
+        </dependency>
 
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-project</artifactId>
-			<version>2.2.1</version>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-project</artifactId>
+            <version>2.2.1</version>
+        </dependency>
 
-		<dependency>
-			<groupId>com.github.verylazyboy</groupId>
-			<artifactId>sablecc-maven-port</artifactId>
-			<version>3.7</version>
-		</dependency>
+        <dependency>
+            <groupId>com.github.verylazyboy</groupId>
+            <artifactId>sablecc-maven-port</artifactId>
+            <version>3.7</version>
+        </dependency>
 		
-		<dependency>
-			<groupId>org.apache.maven.plugin-testing</groupId>
-			<artifactId>maven-plugin-testing-harness</artifactId>
-			<version>2.1</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>2.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    
 </project>
