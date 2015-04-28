@@ -50,12 +50,12 @@
         <repository>
             <id>newton</id>
             <name>newton-releases</name>
-            <url>http://newton.htw-saarland.de:8085/artifactory/plugins-release-local</url>
+            <url>http://markov.htwsaar.de/artifactory/plugins-release-local</url>
         </repository>
         <snapshotRepository>
             <id>newton</id>
             <name>newton-snapshots</name>
-            <url>http://newton.htw-saarland.de:8085/artifactory/plugin-snapshot-local</url>
+            <url>http://markov.htwsaar.de/artifactory/plugin-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
     
@@ -69,7 +69,7 @@
         repository. Usage:
         mvn -P sign-artifact -Darguments=-Dgpg.passphrase=PASSPHRASE clean install deploy
         ===================================================================-->
-        <profile>
+        <!--profile>
             <id>sign-artifact</id>
             <activation>
                 <property>
@@ -83,6 +83,9 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.4</version>
+						<configuration>
+							<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+						</configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -95,7 +98,7 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
+        </profile-->
     </profiles>
 	
     <build>

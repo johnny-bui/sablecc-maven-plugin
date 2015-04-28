@@ -2,6 +2,12 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>com.github.verylazyboy</groupId>
+		<artifactId>sablecc-plugin-test-parent</artifactId>
+		<version>2.0-beta.5</version>
+	</parent>
+
 	<groupId>de.htwds</groupId>
 	<artifactId>sablecc-plugin-user-test</artifactId>
 	<version>1.0-SNAPSHOT</version>
@@ -14,14 +20,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gensource.dir>${basedir}/target/generated-sources</gensource.dir>
 	</properties>
-
-	<distributionManagement>
-		<repository>
-			<id>internal.repo</id>
-			<name>Internal Repository</name>
-			<url>${internal.repo.path}</url>
-		</repository>
-	</distributionManagement>
 
 	<build>
 		<plugins>
