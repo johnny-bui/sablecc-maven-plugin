@@ -50,18 +50,19 @@
         <repository>
             <id>newton</id>
             <name>newton-releases</name>
-            <url>http://markov.htwsaar.de/artifactory/plugins-release-local</url>
+            <url>http://newton.htwsaar.de/artifactory/plugins-release-local</url>
         </repository>
         <snapshotRepository>
             <id>newton</id>
             <name>newton-snapshots</name>
-            <url>http://markov.htwsaar.de/artifactory/plugin-snapshot-local</url>
+            <url>http://newton.htwsaar.de/artifactory/plugins-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
     
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <profiles>
         <!-- ===================================================================
@@ -131,10 +132,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
-                <!--configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                </configuration-->
             </plugin>
 					
         </plugins>
@@ -178,6 +175,7 @@
             <groupId>com.github.verylazyboy</groupId>
             <artifactId>sablecc-maven-port</artifactId>
             <version>3.7</version>
+            <type>jar</type>
         </dependency>
 		
         <dependency>
