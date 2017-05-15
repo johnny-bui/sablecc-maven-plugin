@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>com.github.verylazyboy</groupId>
 		<artifactId>sablecc-plugin-test-parent</artifactId>
-		<version>2.0-beta.5</version>
+		<version>2.0-beta.6-SNAPSHOT</version>
 	</parent>
 
 	<groupId>de.htwds</groupId>
 	<artifactId>sablecc-plugin-user-test</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>2.0-beta.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>sablecc-plugin-user-test</name>
 	
@@ -27,7 +27,7 @@
 			<plugin>
 				<groupId>com.github.verylazyboy</groupId>
 				<artifactId>sablecc-maven-plugin</artifactId>
-				<version>2.0-beta.5</version>
+				<version>2.0-beta.6-SNAPSHOT</version>
 				<configuration>
 					<!-- =======================================================
 						the grammar file 
@@ -52,7 +52,13 @@
 					======================================================= -->
 					<inlineMaxAlts></inlineMaxAlts>
 				</configuration>
-				
+				<dependencies>
+					<dependency>
+						<groupId>com.github.verylazyboy</groupId>
+						<artifactId>sablecc-maven-port</artifactId>
+						<version>3.7</version>
+					</dependency>
+				</dependencies>
 				<executions>
 					<!-- this execution will call sablecc for the file
 							src/main/resources/MySQLGrammar.scc
@@ -78,13 +84,13 @@
 							in each execution tag. You must also provide an id tag
 							for each execution.
 
-							If you don't set the tag destination for each execution, 
-							the generated 
-							files are saved in the default directory, which is
-							either defined in the "global" configuration tag
-							above, or is the implicit default value 
-							${gensource.dir}/sablecc
-						-->
+						If you don't set the tag destination for each execution, 
+						the generated 
+						files are saved in the default directory, which is
+						either defined in the "global" configuration tag
+						above, or is the implicit default value 
+						${gensource.dir}/sablecc
+					-->
 					<execution>
 						<id>complex grammar</id>
 						<configuration>
